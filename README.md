@@ -16,8 +16,3 @@ There are widgets to count the number of moves, count the time lapsed in seconds
 ## APK Download
 Download and install the apk files from here: 
 https://drive.google.com/drive/folders/1x6EzZ7v6uEk6_TwqhBXwxz8BWrB5J3rz?usp=sharing 
-
-## Demo Video
-<div align="center">
-  <a href="https://www.youtube.com/watch?v=iOhW0PGewpg"><img width="560" height="315" src="https://i9.ytimg.com/vi_webp/L-EBknaGv9o/mqdefault.webp?v=61f15463&sqp=CIjag5EG&rs=AOn4CLCmsgQNae6Mps9VmvGI65hgWjfGKg" alt="TRAVEL APP DEMO"></a>
-</div>
