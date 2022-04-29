@@ -1,16 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:sliding_puzzle/widgets/moves.dart';
 import 'package:sliding_puzzle/widgets/clock.dart';
+import 'package:sliding_puzzle/widgets/play_pause.dart';
 import 'package:sliding_puzzle/widgets/sound.dart';
 
 class Menu extends StatelessWidget {
   final VoidCallback toggleMusic;
+  final VoidCallback toggleSound;
   final bool isPlaying;
+  final bool soundOn;
   int moves;
   int seconds;
   var size;
 
-  Menu(this.moves, this.size, this.seconds, this.toggleMusic, this.isPlaying, {Key? key}) : super(key: key);
+  Menu(this.moves, this.size, this.seconds, this.toggleMusic, this.toggleSound,
+      this.isPlaying, this.soundOn,
+      {Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +29,11 @@ class Menu extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Sound(toggleMusic, isPlaying),
+              Sound(toggleSound, soundOn),
+              PlayPause(
+                toggleMusic,
+                isPlaying,
+              ),
               Clock(seconds),
               Moves(moves),
             ],
