@@ -14,7 +14,7 @@ class Board extends StatefulWidget {
   _BoardState createState() => _BoardState();
 }
 
-class _BoardState extends State<Board> {
+class _BoardState extends State<Board> with WidgetsBindingObserver {
   var numbers = [for (var i = 0; i <= 15; i++) i];
   final AssetsAudioPlayer _assetsAudioPlayer = AssetsAudioPlayer();
   int moves = 0;
@@ -29,6 +29,49 @@ class _BoardState extends State<Board> {
   void initState() {
     super.initState();
     numbers.shuffle();
+    WidgetsBinding.instance?.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance?.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    switch (state) {
+      case AppLifecycleState.resumed:
+        if (isPlaying) {
+          _assetsAudioPlayer.open(
+            Playlist(
+              audios: [
+                Audio("assets/audios/background_music.mp3"),
+              ],
+            ),
+            loopMode: LoopMode.playlist,
+            autoStart: true,
+            showNotification: true,
+          );
+        }
+        break;
+      case AppLifecycleState.paused:
+        if (isPlaying) {
+          _assetsAudioPlayer.pause();
+        }
+        break;
+      case AppLifecycleState.inactive:
+        if (isPlaying) {
+          _assetsAudioPlayer.pause();
+        }
+        break;
+      case AppLifecycleState.detached:
+        if (isPlaying) {
+          _assetsAudioPlayer.stop();
+        }
+        break;
+    }
   }
 
   @override
@@ -90,7 +133,6 @@ class _BoardState extends State<Board> {
                     Navigator.pop(context);
                     isFirstLoaded = false;
                     prefs.setBool(firstLoadedKey, false);
-
                   },
                   child: const Text(
                     "GOT IT",
@@ -164,8 +206,7 @@ class _BoardState extends State<Board> {
           ],
         ),
         loopMode: LoopMode.playlist,
-        autoStart: true,
-        showNotification: true,
+        autoStart: true
       );
 
       isPlaying = true;
