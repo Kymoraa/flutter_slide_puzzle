@@ -24,7 +24,8 @@ class _BoardState extends State<Board> with WidgetsBindingObserver {
   bool isStarted = false;
   bool isPlaying = false;
   final firstLoadedKey = "true";
-
+  bool soundOn = true;
+  bool musicStarted = false;
   @override
   void initState() {
     super.initState();
@@ -44,17 +45,9 @@ class _BoardState extends State<Board> with WidgetsBindingObserver {
     switch (state) {
       case AppLifecycleState.resumed:
         if (isPlaying) {
-          _assetsAudioPlayer.open(
-            Playlist(
-              audios: [
-                Audio("assets/audios/background_music.mp3"),
-              ],
-            ),
-            loopMode: LoopMode.playlist,
-            autoStart: true,
-            showNotification: true,
-          );
+          _assetsAudioPlayer.play();
         }
+
         break;
       case AppLifecycleState.paused:
         if (isPlaying) {
@@ -64,11 +57,16 @@ class _BoardState extends State<Board> with WidgetsBindingObserver {
       case AppLifecycleState.inactive:
         if (isPlaying) {
           _assetsAudioPlayer.pause();
+
         }
         break;
       case AppLifecycleState.detached:
         if (isPlaying) {
           _assetsAudioPlayer.stop();
+          setState(() {
+            musicStarted = false;
+            isPlaying = false;
+          });
         }
         break;
     }
@@ -88,7 +86,8 @@ class _BoardState extends State<Board> with WidgetsBindingObserver {
         color: Colors.white,
         child: Column(
           children: <Widget>[
-            Menu(moves, size, seconds, toggleMusic, isPlaying),
+            Menu(moves, size, seconds, toggleMusic, toggleSound, isPlaying,
+                soundOn),
             Grid(numbers, size, clickGrid),
             Shuffle(shuffle),
           ],
@@ -195,21 +194,45 @@ class _BoardState extends State<Board> with WidgetsBindingObserver {
   }
 
   void toggleMusic() {
-    if (isPlaying) {
-      _assetsAudioPlayer.stop();
-      isPlaying = false;
-    } else {
+    if (!musicStarted) {
       _assetsAudioPlayer.open(
-        Playlist(
-          audios: [
-            Audio("assets/audios/background_music.mp3"),
-          ],
-        ),
-        loopMode: LoopMode.playlist,
-        autoStart: true
-      );
+          Playlist(
+            audios: [
+              Audio("assets/audios/background_music.mp3"),
+            ],
+          ),
+          loopMode: LoopMode.playlist,
+          autoStart: true);
+      setState(() {
+        musicStarted = true;
+        isPlaying = true;
+      });
+      return;
+    }
+    if (isPlaying) {
+      _assetsAudioPlayer.playOrPause();
+      setState(() {
+        isPlaying = false;
+      });
+    } else {
+      _assetsAudioPlayer.playOrPause();
+      setState(() {
+        isPlaying = true;
+      });
+    }
+  }
 
-      isPlaying = true;
+  void toggleSound() {
+    if (soundOn) {
+      _assetsAudioPlayer.setVolume(0);
+      setState(() {
+        soundOn = false;
+      });
+    } else {
+      _assetsAudioPlayer.setVolume(1);
+      setState(() {
+        soundOn = true;
+      });
     }
   }
 
