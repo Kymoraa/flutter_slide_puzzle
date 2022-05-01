@@ -29,7 +29,7 @@ class Menu extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Sound(toggleSound, soundOn),
+              //Sound(toggleSound, soundOn),
               PlayPause(
                 toggleMusic,
                 isPlaying,

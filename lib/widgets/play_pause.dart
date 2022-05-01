@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 
 class PlayPause extends StatelessWidget {
   final bool isPlaying;
-  const PlayPause(   this.togglePlay,
-    this.isPlaying,
-      {
+  const PlayPause(
+    this.togglePlay,
+    this.isPlaying, {
     Key? key,
   }) : super(key: key);
   final VoidCallback togglePlay;
@@ -16,12 +16,12 @@ class PlayPause extends StatelessWidget {
       onPressed: togglePlay,
       icon: isPlaying
           ? const Icon(
-              CupertinoIcons.pause_fill,
+              CupertinoIcons.speaker_1_fill,
               size: 20.0,
               color: Colors.deepPurpleAccent,
             )
           : const Icon(
-              CupertinoIcons.play_fill,
+              CupertinoIcons.speaker_slash_fill,
               size: 20.0,
               color: Colors.deepPurpleAccent,
             ),
